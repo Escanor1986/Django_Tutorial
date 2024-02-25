@@ -1,0 +1,21 @@
+#* Spécifie la version de Docker Compose utilisée.
+version: "3.8"
+
+#* Définit les différents services de l'application (dans ce cas, juste l'application web Django).
+services:
+  #* Le nom du service (peut importe le nom)
+  web:
+    #* Indique à Docker de construire l'image à partir du Dockerfile situé dans le répertoire courant (.).
+    build: .
+    #* La commande exécutée pour démarrer l'application. Ici, elle lance le serveur de développement Django.
+    command: python manage.py runserver 0.0.0.0:8000
+    #* Montage du répertoire courant (.) dans le conteneur à l'emplacement /mysite.
+    #* Cela permet de refléter les modifications du code en temps réel dans le conteneur.
+    volumes:
+      - .:/mysite/mysite
+    #* Mappe le port 8000 du conteneur au port 8000 de l'hôte, permettant ainsi d'accéder à l'application via localhost:8000.
+    ports:
+      - "8000:8000"
+    #* Définit les variables d'environnement nécessaires à l'application.
+    environment:
+      - DJANGO_SETTINGS_MODULE=mysite.settings
